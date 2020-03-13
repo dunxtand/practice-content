@@ -1,17 +1,16 @@
 import React from 'react';
 import './PokemonList.css';
-import PokemonListItem from '../PokemonListItem/PokemonListItem';
+import PokemonListItem from './PokemonListItem';
 
 
 function PokemonList (props) {
   return (
     <div>
-      {props.pokemon.map((monster, index) => {
+      {props.pokemon.map(monster => {
         return <PokemonListItem
-          key={index}
-          index={index}
+          key={monster.id}
+          id={monster.id}
           name={monster.name}
-          history={props.history}
         />;
       })}
       <button onClick={props.getNextPokemon}>

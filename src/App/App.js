@@ -5,6 +5,7 @@ import config from '../config';
 import { formatQueryParams } from '../helpers';
 import PokemonList from '../PokemonList/PokemonList';
 import PokemonPage from '../PokemonPage/PokemonPage';
+import PokemonMove from '../PokemonMove/PokemonMove';
 
 
 class App extends React.Component {
@@ -12,11 +13,9 @@ class App extends React.Component {
     pokemon: []
   }
 
-  componentDidMount () {
-    this.getNextPokemon();
-  }
+  componentDidMount = () => this.getNextPokemon();
 
-  renderMainRoutes () {
+  renderMainRoutes = () => {
     return (
       <>
         <Route
@@ -36,15 +35,22 @@ class App extends React.Component {
 
         <Route
           exact
-          path={'/pokemon/:index'}
+          path={'/pokemon/:id'}
           render={routeProps => {
-            const index = parseInt(routeProps.match.params.index);
-            const monster = this.state.pokemon[index];
+            const id = parseInt(routeProps.match.params.id);
+            const monster = this.state.pokemon.find(monst => monst.id === id);
+
             return <PokemonPage
               {...routeProps}
               {...monster}
             />;
           }}
+        />
+
+        <Route
+          exact
+          path={'/move/:id'}
+          component={PokemonMove}
         />
       </>
     );
@@ -52,23 +58,31 @@ class App extends React.Component {
 
   getNextPokemon = (offset = 0) => {
     const queryString = formatQueryParams({ offset, limit: 10 });
-    const url = `${config.API_BASE_URL}/pokemon?${queryString}`;
+    const url = config.API_BASE_URL + '/pokemon?' + queryString;
 
     fetch(url)
       .then(res => res.json())
       .then(data => {
+        const pokemon = [...this.state.pokemon, ...data.results]
+          .map((monster, index) => {
+            return {
+              id: index + 1,
+              ...monster
+            }
+          });
+
         this.setState({
-          pokemon: [...this.state.pokemon, ...data.results]
+          pokemon
         });
       });
   }
 
   shortenList = () => {
     const newLength = this.state.pokemon.length - 10;
-    const newPokemon = this.state.pokemon.slice(0, newLength);
+    const pokemon = this.state.pokemon.slice(0, newLength);
     this.setState({
-      pokemon: newPokemon
-    })
+      pokemon
+    });
   }
 
   render () {

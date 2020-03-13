@@ -1,42 +1,52 @@
 import React from 'react';
-import PokemonForm from '../PokemonForm/PokemonForm';
+import PokemonImage from './PokemonImage';
+import Stats from './Stats';
+import Moves from './Moves';
+import config from '../config';
+import { capitalize } from '../helpers';
 
 
 class PokemonPage extends React.Component {
   state = {
-    stats: []
+    base_experience: undefined,
+    height: undefined,
+    stats: [],
+    moves: [],
+    name: this.props.name,
+    sprites: {
+      front_default: undefined
+    }
   }
 
   componentDidMount () {
-    fetch(this.props.url)
+    const { id } = this.props.match.params;
+    const url = config.API_BASE_URL + '/pokemon/' + id;
+
+    fetch(url)
       .then(res => res.json())
-      .then(data => {
-        this.setState({ ...data })
-      })
+      .then(data => this.setState({ ...data }));
   }
 
   render () {
+    const {
+      name, base_experience, height,
+      stats, sprites, moves
+    } = this.state;
+
     return (
       <>
-        {this.state.forms && <PokemonForm {...this.state.forms[0]}/>}
-        <h2>
-          {this.props.name}
-        </h2>
+        <PokemonImage src={sprites.front_default}/>
+        <h2>{capitalize(name)}</h2>
         <div>
-          Base Experience: {this.state.base_experience}
+          Base Experience: {base_experience}
         </div>
         <div>
-          Height: {this.state.height}
+          Height: {height}
         </div>
-        {this.state.stats.map((statObj, index) => {
-          const name = statObj.stat.name;
-          const amount = statObj.base_stat;
-          return (
-            <div key={index}>
-              {name}: {amount}
-            </div>
-          );
-        })}
+        <br/>
+        <Stats stats={stats}/>
+        <br/>
+        <Moves moves={moves}/>
       </>
     )
   }
