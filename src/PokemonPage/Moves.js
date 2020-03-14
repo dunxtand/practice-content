@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { deslugify } from '../helpers';
-import { Bold } from '../helper-components';
+import Bold from '../helper-components/Bold';
 
 
 function Moves (props) {

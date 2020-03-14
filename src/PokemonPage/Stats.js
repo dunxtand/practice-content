@@ -1,6 +1,6 @@
 import React from 'react';
 import { deslugify } from '../helpers';
-import { Bold } from '../helper-components';
+import Bold from '../helper-components/Bold';
 
 
 function Stats (props) {

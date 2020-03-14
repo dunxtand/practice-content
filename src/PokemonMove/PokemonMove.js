@@ -1,11 +1,13 @@
 import React from 'react';
 import config from '../config';
 import { capitalize, deslugify } from '../helpers';
-import { Bold } from '../helper-components';
+import Bold from '../helper-components/Bold';
+import Loading from '../helper-components/Loading';
 
 
 class PokemonMove extends React.Component {
   state = {
+    loaded: false,
     name: undefined,
     accuracy: undefined,
     type: undefined,
@@ -21,10 +23,19 @@ class PokemonMove extends React.Component {
 
     fetch(url)
       .then(res => res.json())
-      .then(data => this.setState({ ...data }));
+      .then(data => {
+        this.setState({
+          ...data,
+          loaded: true
+        })
+      });
   }
 
   render () {
+    if (!this.state.loaded) {
+      return <Loading/>;
+    }
+
     const {
       name, accuracy = 'N/A',
       effect_entries, effect_chance,
@@ -40,6 +51,10 @@ class PokemonMove extends React.Component {
       <>
         <h3>{deslugify(name)}</h3>
         <div>
+          {effect}
+        </div>
+        <br/>
+        <div>
           <Bold>Type:</Bold> {capitalize(type.name)}
         </div>
         <br/>
@@ -53,10 +68,6 @@ class PokemonMove extends React.Component {
         <br/>
         <div>
           <Bold>Accuracy:</Bold> {accuracy}
-        </div>
-        <br/>
-        <div>
-          {effect}
         </div>
         <br/>
         <button onClick={() => this.props.history.goBack()}>

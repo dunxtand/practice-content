@@ -4,11 +4,13 @@ import Stats from './Stats';
 import Moves from './Moves';
 import config from '../config';
 import { capitalize } from '../helpers';
-import { Bold } from '../helper-components';
+import Bold from '../helper-components/Bold';
+import Loading from '../helper-components/Loading';
 
 
 class PokemonPage extends React.Component {
   state = {
+    loaded: false,
     base_experience: undefined,
     height: undefined,
     stats: [],
@@ -25,10 +27,19 @@ class PokemonPage extends React.Component {
 
     fetch(url)
       .then(res => res.json())
-      .then(data => this.setState({ ...data }));
+      .then(data => {
+        this.setState({
+          ...data,
+          loaded: true
+      })
+    });
   }
 
   render () {
+    if (!this.state.loaded) {
+      return <Loading/>;
+    }
+
     const {
       name, base_experience, height,
       stats, sprites, moves
