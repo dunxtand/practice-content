@@ -4,6 +4,7 @@ import Stats from './Stats';
 import Moves from './Moves';
 import config from '../config';
 import { capitalize } from '../helpers';
+import { Bold } from '../helper-components';
 
 
 class PokemonPage extends React.Component {
@@ -38,10 +39,10 @@ class PokemonPage extends React.Component {
         <PokemonImage src={sprites.front_default}/>
         <h2>{capitalize(name)}</h2>
         <div>
-          Base Experience: {base_experience}
+          <Bold>Base Experience:</Bold> {base_experience}
         </div>
         <div>
-          Height: {height}
+          <Bold>Height:</Bold> {height}
         </div>
         <br/>
         <Stats stats={stats}/>

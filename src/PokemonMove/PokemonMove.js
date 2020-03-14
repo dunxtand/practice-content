@@ -1,13 +1,18 @@
 import React from 'react';
 import config from '../config';
-import { deslugify } from '../helpers';
+import { capitalize, deslugify } from '../helpers';
+import { Bold } from '../helper-components';
 
 
 class PokemonMove extends React.Component {
   state = {
     name: undefined,
     accuracy: undefined,
-    effect_entries: []
+    type: undefined,
+    power: undefined,
+    pp: undefined,
+    effect_entries: [],
+    type: {}
   }
 
   componentDidMount () {
@@ -20,22 +25,43 @@ class PokemonMove extends React.Component {
   }
 
   render () {
-    const { name, accuracy, effect_entries } = this.state;
+    const {
+      name, accuracy = 'N/A',
+      effect_entries, effect_chance,
+      type, power, pp
+    } = this.state;
+
+    let [{ effect } = {}] = effect_entries;
+    if (effect) {
+      effect = effect.replace('$effect_chance', effect_chance);
+    }
 
     return (
       <>
         <h3>{deslugify(name)}</h3>
         <div>
-          Accuracy: {accuracy || 'N/A'}
+          <Bold>Type:</Bold> {capitalize(type.name)}
         </div>
         <br/>
         <div>
-          {effect_entries.length > 0 &&
-            <div>
-              {effect_entries[0].effect}
-            </div>
-          }
+          <Bold>Power:</Bold> {power}
         </div>
+        <br/>
+        <div>
+          <Bold>PP:</Bold> {pp}
+        </div>
+        <br/>
+        <div>
+          <Bold>Accuracy:</Bold> {accuracy}
+        </div>
+        <br/>
+        <div>
+          {effect}
+        </div>
+        <br/>
+        <button onClick={() => this.props.history.goBack()}>
+          Back
+        </button>
       </>
     );
   }

@@ -13,6 +13,7 @@ function PokemonList (props) {
           name={monster.name}
         />;
       })}
+      <br/>
       <button onClick={props.getNextPokemon}>
         See More
       </button>
