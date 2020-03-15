@@ -15,11 +15,11 @@ function PokemonList (props) {
       })}
       <br/>
       <button onClick={props.getNextPokemon}>
-        See More
+        Show More
       </button>
       {props.pokemon.length > 10 &&
         <button onClick={props.shortenList}>
-          See Fewer
+          Show Fewer
         </button>
       }
     </div>

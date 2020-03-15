@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
 import './App.css';
 import config from '../config';
 import { formatQueryParams, extractId } from '../helpers';
@@ -7,6 +7,7 @@ import PokemonList from '../PokemonList/PokemonList';
 import PokemonSearch from '../PokemonSearch/PokemonSearch';
 import PokemonPage from '../PokemonPage/PokemonPage';
 import PokemonMove from '../PokemonMove/PokemonMove';
+import NotFound from '../helper-components/NotFound';
 
 
 class App extends React.Component {
@@ -24,7 +25,7 @@ class App extends React.Component {
 
   renderMainRoutes = () => {
     return (
-      <>
+      <Switch>
         <Route
           exact
           path={'/'}
@@ -74,7 +75,9 @@ class App extends React.Component {
             />
           }}
         />
-      </>
+
+        <Route component={NotFound}/>
+      </Switch>
     );
   }
 

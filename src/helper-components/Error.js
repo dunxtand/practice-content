@@ -8,7 +8,7 @@ function Error ({ goBack = () => {} }) {
       <Bold>
         There was an error displaying this page.
       </Bold>
-      <br/>
+      <br/><br/>
       <button onClick={goBack}>
         Back
       </button>
