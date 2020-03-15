@@ -4,6 +4,7 @@ import './App.css';
 import config from '../config';
 import { formatQueryParams, extractId } from '../helpers';
 import PokemonList from '../PokemonList/PokemonList';
+import PokemonSearch from '../PokemonSearch/PokemonSearch';
 import PokemonPage from '../PokemonPage/PokemonPage';
 import PokemonMove from '../PokemonMove/PokemonMove';
 
@@ -30,12 +31,17 @@ class App extends React.Component {
           render={routeProps => {
             const nextPageOffset = this.state.pokemon.length;
 
-            return <PokemonList
-              {...routeProps}
-              pokemon={this.state.pokemon}
-              getNextPokemon={() => this.getNextPokemon(nextPageOffset)}
-              shortenList={this.shortenList}
-            />
+            return (
+              <>
+                <PokemonList
+                  {...routeProps}
+                  pokemon={this.state.pokemon}
+                  getNextPokemon={() => this.getNextPokemon(nextPageOffset)}
+                  shortenList={this.shortenList}
+                />
+                <PokemonSearch {...routeProps}/>
+              </>
+            );
           }}
         />
 
