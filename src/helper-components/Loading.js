@@ -15,19 +15,20 @@ class Loading extends React.Component {
       this.setState({ dots });
     }, 200);
   }
-  
+
   componentWillUnmount () {
     clearInterval(this.interval);
   }
 
   render () {
+    const message = (this.props.text || 'Loading') + ' ';
     const dots = [...Array(this.state.dots)]
       .map(() => '.')
       .join(' ')
 
     return (
       <div>
-        {"Loading " + dots}
+        {message + dots}
       </div>
     );
   }

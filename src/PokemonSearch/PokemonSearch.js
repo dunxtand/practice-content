@@ -1,10 +1,13 @@
 import React from 'react';
 import config from '../config';
+import Loading from '../helper-components/Loading';
 
 
 class PokemonSearch extends React.Component {
   state = {
-    searchName: ''
+    searchName: '',
+    errorMessage: '',
+    loading: false
   }
 
   updateSearchName = (e) => {
@@ -16,11 +19,16 @@ class PokemonSearch extends React.Component {
   onSubmit = (e) => {
     e.preventDefault();
 
+    this.setState({ errorMessage: '' });
+
     const { searchName } = this.state;
     const url = config.API_BASE_URL + '/pokemon/' + searchName.toLowerCase();
 
+    this.setState({ loading: true });
+
     fetch(url) // i.e. https://pokeapi.co/api/v2/pokemon/bulbasaur
       .then(res => {
+        this.setState({ loading: false });
         if (res.ok) {
           return res.json();
         }
@@ -30,12 +38,15 @@ class PokemonSearch extends React.Component {
         this.props.history.push(`/pokemon/${data.id}`);
       })
       .catch(err => {
-        alert(`Couldn't find pokemon with name: ${searchName}`);
-        console.error(err);
+        this.setState({
+          errorMessage: `Couldn't find pokemon with name: ${searchName}`
+        });
       })
   }
 
   render () {
+    const { loading, errorMessage } = this.state;
+
     return (
       <>
         <h3>
@@ -43,11 +54,13 @@ class PokemonSearch extends React.Component {
         </h3>
         <form onSubmit={e => this.onSubmit(e)}>
           <input
-            placeholder={'search by pokemon name'}
-            value={this.state.searchName}
+            placeholder={'enter a name here'}
             onChange={this.updateSearchName}
           />
         </form>
+        <div>
+          {loading ? <Loading text="Searching"/> : errorMessage}
+        </div>
       </>
     );
   }
