@@ -59,7 +59,7 @@ class PokemonPage extends React.Component {
 
     return (
       <>
-        <PokemonImage src={sprites.front_default}/>
+        <PokemonImage src={sprites.front_default} name={name}/>
         <h2>{capitalize(name)}</h2>
         <div>
           <Bold>Base Experience:</Bold> {base_experience}
