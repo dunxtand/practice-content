@@ -7,7 +7,7 @@ import Loading from '../helper-components/Loading';
 
 class PokemonMove extends React.Component {
   state = {
-    loaded: false,
+    loaded: this.props.loaded || false,
     name: this.props.name,
     accuracy: this.props.accuracy || 'N/A',
     effect_entries: this.props.effect_entries,
@@ -18,22 +18,34 @@ class PokemonMove extends React.Component {
   }
 
   componentDidMount () {
+    // if the data is already saved,
+    // use the inherited props.
+    if (this.state.loaded) {
+      return false;
+    }
+
+    // otherwise, fetch the data.
     const { id } = this.props.match.params;
     const url = config.API_BASE_URL + '/move/' + id;
 
-    fetch(url)
-      .then(res => res.json())
+    fetch(url) // i.e. https://pokeapi.co/api/v2/move/1/
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error(`GET ${url} failed: ${res.statusText}`);
+      })
       .then(data => {
         this.props.saveMoveResults(data);
-
         this.setState({
           ...data,
           loaded: true
-        })
+        });
       });
   }
 
   render () {
+    console.log(this.state.loaded);
     if (!this.state.loaded) {
       return <Loading/>;
     }
@@ -46,6 +58,7 @@ class PokemonMove extends React.Component {
 
     let [{ effect } = {}] = effect_entries;
     if (effect) {
+      // replace '$effect_chance' with the actual value from the data.
       effect = effect.replace(/\$effect_chance/g, effect_chance);
     }
 

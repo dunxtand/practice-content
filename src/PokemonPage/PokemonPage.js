@@ -20,18 +20,25 @@ class PokemonPage extends React.Component {
   }
 
   componentDidMount () {
+    // if the data is already saved,
+    // use the inherited props.
     if (this.state.loaded) {
       return false;
     }
 
+    // otherwise, fetch the data.
     const { id } = this.props.match.params;
     const url = config.API_BASE_URL + '/pokemon/' + id;
 
-    fetch(url)
-      .then(res => res.json())
+    fetch(url) // i.e. https://pokeapi.co/api/v2/pokemon/1/
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error(`GET ${url} failed: ${res.statusText}`);
+      })
       .then(data => {
         this.props.savePokemonResults(data);
-
         this.setState({
           ...data,
           loaded: true
