@@ -45,7 +45,6 @@ class PokemonMove extends React.Component {
   }
 
   render () {
-    console.log(this.state.loaded);
     if (!this.state.loaded) {
       return <Loading/>;
     }

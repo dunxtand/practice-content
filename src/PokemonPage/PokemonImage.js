@@ -6,7 +6,11 @@ function PokemonImage (props) {
     return null;
   }
 
-  return <img src={props.src} alt="Pokemon"/>;
+  return <img
+    src={props.src}
+    alt={props.name}
+    className="pokemon-image"
+  />;
 }
 
 export default PokemonImage;

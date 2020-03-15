@@ -1,4 +1,5 @@
 import React from 'react';
+import './PokemonPage.css';
 import PokemonImage from './PokemonImage';
 import Stats from './Stats';
 import Moves from './Moves';
