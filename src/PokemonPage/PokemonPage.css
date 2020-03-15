@@ -1,3 +1,17 @@
+.pokemon-page-move {
+  margin: 5px;
+}
+
+.pokemon-page-move a {
+  color: green;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.pokemon-page-move a:visited {
+  color: lightgreen;
+}
+
 .pokemon-image {
   height: 95px;
   width: 95px;

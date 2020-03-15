@@ -33,13 +33,13 @@ class App extends React.Component {
 
             return (
               <>
+                <PokemonSearch {...routeProps}/>
                 <PokemonList
                   {...routeProps}
                   pokemon={this.state.pokemon}
                   getNextPokemon={() => this.getNextPokemon(nextPageOffset)}
                   shortenList={this.shortenList}
                 />
-                <PokemonSearch {...routeProps}/>
               </>
             );
           }}
@@ -86,18 +86,13 @@ class App extends React.Component {
     const queryString = formatQueryParams({ offset, limit: 10 });
     const url = config.API_BASE_URL + '/pokemon?' + queryString;
 
-    fetch(url)
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        throw new Error(`GET ${url} failed: ${res.statusText}`);
-      })
+    fetch(url) // i.e. https://pokeapi.co/api/v2/pokemon?offset=0&limit=10
+      .then(res => res.json())
       .then(data => {
         const pokemon = [...this.state.pokemon, ...data.results]
           .map((monster, index) => {
             return {
-              id: extractId(monster.url),
+              id: monster.id || extractId(monster.url),
               ...monster
             }
           });

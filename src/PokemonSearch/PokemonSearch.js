@@ -1,4 +1,5 @@
 import React from 'react';
+import './PokemonSearch.css';
 import config from '../config';
 import Loading from '../helper-components/Loading';
 
@@ -12,12 +13,19 @@ class PokemonSearch extends React.Component {
 
   updateSearchName = (e) => {
     this.setState({
-      searchName: e.target.value
+      searchName: e.target.value,
+      errorMessage: ''
     });
   }
 
   onSubmit = (e) => {
     e.preventDefault();
+
+    if (!this.state.searchName) {
+      return this.setState({
+        errorMessage: 'You didn\'t enter a name!'
+      });
+    }
 
     this.setState({ errorMessage: '' });
 
@@ -52,13 +60,16 @@ class PokemonSearch extends React.Component {
         <h3>
           Search by Name
         </h3>
-        <form onSubmit={e => this.onSubmit(e)}>
+        <form id="pokemon-search" onSubmit={e => this.onSubmit(e)}>
           <input
             placeholder={'enter a name here'}
             onChange={this.updateSearchName}
           />
+          <button type="submit">
+            Search
+          </button>
         </form>
-        <div>
+        <div id="pokemon-search-error">
           {loading ? <Loading text="Searching"/> : errorMessage}
         </div>
       </>

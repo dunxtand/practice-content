@@ -1,8 +1,10 @@
 import React from 'react';
+import './PokemonMove.css';
 import config from '../config';
 import { capitalize, deslugify } from '../helpers';
 import Bold from '../helper-components/Bold';
 import Loading from '../helper-components/Loading';
+import Error from '../helper-components/Error';
 
 
 class PokemonMove extends React.Component {
@@ -41,10 +43,15 @@ class PokemonMove extends React.Component {
           ...data,
           loaded: true
         });
-      });
+      })
+      .catch(error => this.setState({ error }));
   }
 
   render () {
+    if (this.state.error) {
+      return <Error goBack={this.props.history.goBack}/>
+    }
+
     if (!this.state.loaded) {
       return <Loading/>;
     }
@@ -64,7 +71,7 @@ class PokemonMove extends React.Component {
     return (
       <>
         <h3>{deslugify(name)}</h3>
-        <div>
+        <div id="pokemon-move-effect">
           {effect}
         </div>
         <br/>

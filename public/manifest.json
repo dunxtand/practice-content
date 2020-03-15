@@ -1,7 +1,6 @@
 {
   "short_name": "Pokemon Navigator",
   "name": "Pokemon Navigator",
-  "icons": [],
   "start_url": ".",
   "display": "standalone"
 }

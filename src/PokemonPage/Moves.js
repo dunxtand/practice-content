@@ -15,7 +15,7 @@ function Moves (props) {
         const id = extractId(url);
 
         return (
-          <div key={index}>
+          <div key={index} className="pokemon-page-move">
             <Link to={`/move/${id}`}>
               {deslugify(name)}
             </Link>

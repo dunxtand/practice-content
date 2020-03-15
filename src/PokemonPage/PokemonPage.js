@@ -7,10 +7,12 @@ import config from '../config';
 import { capitalize } from '../helpers';
 import Bold from '../helper-components/Bold';
 import Loading from '../helper-components/Loading';
+import Error from '../helper-components/Error';
 
 
 class PokemonPage extends React.Component {
   state = {
+    error: null,
     loaded: this.props.loaded || false,
     name: this.props.name,
     base_experience: this.props.base_experience,
@@ -43,11 +45,16 @@ class PokemonPage extends React.Component {
         this.setState({
           ...data,
           loaded: true
-        })
-      });
+        });
+      })
+      .catch(error => this.setState({ error }));
   }
 
   render () {
+    if (this.state.error) {
+      return <Error goBack={this.props.history.goBack}/>
+    }
+
     if (!this.state.loaded) {
       return <Loading/>;
     }

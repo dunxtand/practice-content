@@ -7,7 +7,7 @@ function PokemonListItem (props) {
   const { name, id } = props;
 
   return (
-    <div>
+    <div className="pokemon-list-item">
       <Link to={`/pokemon/${id}`}>
         {capitalize(name)}
       </Link>
