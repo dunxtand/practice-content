@@ -47,7 +47,7 @@ class PokemonSearch extends React.Component {
       })
       .catch(err => {
         this.setState({
-          errorMessage: `Couldn't find pokemon with name: ${searchName}`
+          errorMessage: `There's no Pokemon named "${searchName}"!`
         });
       })
   }
