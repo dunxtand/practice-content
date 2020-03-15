@@ -9,6 +9,7 @@ import Error from '../helper-components/Error';
 
 class PokemonMove extends React.Component {
   state = {
+    error: null,
     loaded: this.props.loaded || false,
     name: this.props.name,
     accuracy: this.props.accuracy || 'N/A',
