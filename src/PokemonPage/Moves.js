@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { deslugify } from '../helpers';
+import { deslugify, extractId } from '../helpers';
 import Bold from '../helper-components/Bold';
 
 
@@ -11,9 +11,8 @@ function Moves (props) {
         <Bold>MOVES</Bold>
       </div>
       {props.moves.map((move, index) => {
-        const { name } = move.move;
-        const urlArr = move.move.url.split('/');
-        const id = urlArr[urlArr.length - 2];
+        const { name, url } = move.move;
+        const id = extractId(url);
 
         return (
           <div key={index}>

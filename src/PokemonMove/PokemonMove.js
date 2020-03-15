@@ -8,13 +8,13 @@ import Loading from '../helper-components/Loading';
 class PokemonMove extends React.Component {
   state = {
     loaded: false,
-    name: undefined,
-    accuracy: undefined,
-    type: undefined,
-    power: undefined,
-    pp: undefined,
-    effect_entries: [],
-    type: {}
+    name: this.props.name,
+    accuracy: this.props.accuracy || 'N/A',
+    effect_entries: this.props.effect_entries,
+    effect_chance: this.props.effect_chance,
+    type: this.props.type,
+    power: this.props.power,
+    pp: this.props.pp
   }
 
   componentDidMount () {
@@ -24,6 +24,8 @@ class PokemonMove extends React.Component {
     fetch(url)
       .then(res => res.json())
       .then(data => {
+        this.props.saveMoveResults(data);
+
         this.setState({
           ...data,
           loaded: true
@@ -37,14 +39,14 @@ class PokemonMove extends React.Component {
     }
 
     const {
-      name, accuracy = 'N/A',
+      name, accuracy,
       effect_entries, effect_chance,
       type, power, pp
     } = this.state;
 
     let [{ effect } = {}] = effect_entries;
     if (effect) {
-      effect = effect.replace('$effect_chance', effect_chance);
+      effect = effect.replace(/\$effect_chance/g, effect_chance);
     }
 
     return (

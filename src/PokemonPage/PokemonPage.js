@@ -10,29 +10,33 @@ import Loading from '../helper-components/Loading';
 
 class PokemonPage extends React.Component {
   state = {
-    loaded: false,
-    base_experience: undefined,
-    height: undefined,
-    stats: [],
-    moves: [],
+    loaded: this.props.loaded || false,
     name: this.props.name,
-    sprites: {
-      front_default: undefined
-    }
+    base_experience: this.props.base_experience,
+    height: this.props.height,
+    stats: this.props.stats,
+    sprites: this.props.sprites,
+    moves: this.props.moves
   }
 
   componentDidMount () {
+    if (this.state.loaded) {
+      return false;
+    }
+
     const { id } = this.props.match.params;
     const url = config.API_BASE_URL + '/pokemon/' + id;
 
     fetch(url)
       .then(res => res.json())
       .then(data => {
+        this.props.savePokemonResults(data);
+
         this.setState({
           ...data,
           loaded: true
-      })
-    });
+        })
+      });
   }
 
   render () {

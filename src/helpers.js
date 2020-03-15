@@ -22,3 +22,12 @@ export function deslugify (str) {
     .map(subStr => capitalize(subStr))
     .join(' ');
 }
+
+export function extractId (url) {
+  if (!url) {
+    return url;
+  }
+  const urlArr = url.split('/');
+  const idStr = urlArr[urlArr.length - 2];
+  return parseInt(idStr);
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import './App.css';
 import config from '../config';
-import { formatQueryParams } from '../helpers';
+import { formatQueryParams, extractId } from '../helpers';
 import PokemonList from '../PokemonList/PokemonList';
 import PokemonPage from '../PokemonPage/PokemonPage';
 import PokemonMove from '../PokemonMove/PokemonMove';
@@ -10,7 +10,8 @@ import PokemonMove from '../PokemonMove/PokemonMove';
 
 class App extends React.Component {
   state = {
-    pokemon: []
+    pokemon: [],
+    moves: []
   }
 
   componentDidMount = () => this.getNextPokemon();
@@ -43,6 +44,7 @@ class App extends React.Component {
             return <PokemonPage
               {...routeProps}
               {...monster}
+              savePokemonResults={this.savePokemonResults}
             />;
           }}
         />
@@ -50,7 +52,16 @@ class App extends React.Component {
         <Route
           exact
           path={'/move/:id'}
-          component={PokemonMove}
+          render={routeProps => {
+            const id = parseInt(routeProps.match.params.id);
+            const move = this.state.moves.find(move => move.id === id);
+
+            return <PokemonMove
+              {...routeProps}
+              {...move}
+              saveMoveResults={this.saveMoveResults}
+            />
+          }}
         />
       </>
     );
@@ -66,23 +77,49 @@ class App extends React.Component {
         const pokemon = [...this.state.pokemon, ...data.results]
           .map((monster, index) => {
             return {
-              id: index + 1,
+              id: extractId(monster.url),
               ...monster
             }
           });
 
-        this.setState({
-          pokemon
-        });
+        this.setState({ pokemon });
       });
   }
 
   shortenList = () => {
     const newLength = this.state.pokemon.length - 10;
     const pokemon = this.state.pokemon.slice(0, newLength);
-    this.setState({
-      pokemon
+    this.setState({ pokemon });
+  }
+
+  savePokemonResults = (data) => {
+    const pokemon = this.state.pokemon.map(monster => {
+      if (monster.id !== data.id) {
+        return monster;
+      }
+      return {
+        ...monster,
+        ...data,
+        loaded: true
+      }
     });
+    console.log(pokemon);
+    this.setState({ pokemon });
+  }
+
+  saveMoveResults = (data) => {
+    const moves = this.state.moves.map(move => {
+      if (move.id !== data.id) {
+        return move;
+      }
+      return {
+        ...move,
+        ...data,
+        loaded: true
+      }
+    });
+
+    this.setState({ moves });
   }
 
   render () {
