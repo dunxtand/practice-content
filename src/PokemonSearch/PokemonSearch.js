@@ -27,8 +27,6 @@ class PokemonSearch extends React.Component {
       });
     }
 
-    this.setState({ errorMessage: '' });
-
     const { searchName } = this.state;
     const url = config.API_BASE_URL + '/pokemon/' + searchName.toLowerCase();
 
@@ -47,6 +45,7 @@ class PokemonSearch extends React.Component {
       })
       .catch(err => {
         this.setState({
+          loading: false,
           errorMessage: `There's no Pokemon named "${searchName}"!`
         });
       })
