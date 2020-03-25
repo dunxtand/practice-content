@@ -9,7 +9,7 @@ The objectives are:
 * Practice fetching and rendering data in React components.
 * Work on designing a friendly interface for viewing structured data.
 
-To use:
+Try it out at [https://api-interface-practice.now.sh/](https://api-interface-practice.now.sh/), or locally using the instructions below:
 
 ```bash
 git clone https://github.com/dunxtand/practice-content.git
